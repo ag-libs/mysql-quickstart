@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+if [ -z "$1" ]; then
+    echo "Usage: $0 <mysql-version>"
+    echo "Example: $0 8.4"
+    exit 1
+fi
+
+MYSQL_VERSION="$1"
 dir="$(git rev-parse --show-toplevel)/target"
 mkdir -p "${dir}"
 
@@ -13,13 +20,12 @@ function cleanup {
 
 trap cleanup EXIT
 
-echo "Creating MySQL container..."
-# starting the database
+echo "Creating MySQL ${MYSQL_VERSION} container..."
 id=$(docker run -d \
   -e MYSQL_USER=admin \
   -e MYSQL_PASSWORD=test \
   -e MYSQL_ROOT_PASSWORD=test \
-  mysql:8.4 \
+  mysql:${MYSQL_VERSION} \
   mysqld \
   --character-set-server=utf8mb4 \
   --collation-server=utf8mb4_unicode_ci \
@@ -46,7 +52,7 @@ do
     echo "Done"
     exit 0
   fi
-  echo "Step ${i}"
+  echo "Waiting ${i}/60..."
   sleep 1
 done
 
