@@ -7,7 +7,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>mysql-quickstart</artifactId>
-    <version>1.0.0</version>
+    <version>8.4</version>
     <packaging>jar</packaging>
 
     <name>MySQL Quickstart</name>
@@ -15,7 +15,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mysql.version>8.4</mysql.version>
     </properties>
 
     <build>
@@ -100,7 +99,7 @@
                             <executable>bash</executable>
                             <arguments>
                                 <argument>${project.basedir}/generate-minimal-db.sh</argument>
-                                <argument>${mysql.version}</argument>
+                                <argument>${project.version}</argument>
                             </arguments>
                         </configuration>
                     </execution>
