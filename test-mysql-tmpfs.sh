@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+if [ -z "$1" ]; then
+    echo "Error: MySQL version must be specified as first argument"
+    exit 1
+fi
+
+MYSQL_VERSION=$1
+
 # Start MySQL container
 echo "Starting MySQL container..."
 START_TIME=$(date +%s.%N)
@@ -9,13 +16,10 @@ CONTAINER_ID=$(docker run -d \
   --tmpfs /var/lib/mysql:rw,size=1g \
   -p 3306:3306 \
   -e MYSQL_ROOT_PASSWORD=test \
-  -v $(pwd)/target/empty-mysql.tar:/tmp/empty-mysql.tar:ro \
-  -v $(pwd)/init-tmpfs.sh:/usr/local/bin/init-tmpfs.sh:ro \
-  --entrypoint=/usr/local/bin/init-tmpfs.sh \
-  mysql:8.4 mysqld \
-  --innodb-buffer-pool-size=16M \
-  --skip-performance-schema \
-  --skip-log-bin)
+  -v $(pwd)/target/empty-mysql.tar.gz:/tmp/empty-mysql.tar.gz:ro \
+  -v $(pwd)/mysql-quickstart-entrypoint.sh:/mysql-quickstart-entrypoint.sh:ro \
+  --entrypoint=/mysql-quickstart-entrypoint.sh \
+  mysql:$MYSQL_VERSION)
 
 echo "Container ID: $CONTAINER_ID"
 

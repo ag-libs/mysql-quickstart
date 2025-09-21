@@ -30,6 +30,7 @@ id=$(docker run -d \
   --character-set-server=utf8mb4 \
   --collation-server=utf8mb4_unicode_ci \
   --explicit_defaults_for_timestamp \
+  --skip-mysqlx \
   --sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES,ONLY_FULL_GROUP_BY,ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_DATE,NO_ZERO_IN_DATE)
 
 sleep 1
@@ -40,14 +41,21 @@ do
   if bash -c "docker logs ${id} 2>&1 | grep -q 'port: 3306  MySQL Community Server'"; then
     echo "Container started."
 
+    echo "Setting up initial database and user permissions..."
+    docker exec "${id}" mysql -u root -ptest -e "
+CREATE DATABASE IF NOT EXISTS test;
+GRANT ALL ON *.* TO 'admin'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+"
+
     echo "Flushing MySQL tables for consistent data copy..."
     docker exec "${id}" mysql -u root -ptest -e "FLUSH TABLES WITH READ LOCK;"
 
     echo "Creating compressed archive while MySQL is locked..."
-    docker exec "${id}" tar cf /data.tar -C /var/lib/mysql .
+    docker exec "${id}" sh -c "tar cf - -C /var/lib/mysql . | gzip --fast > /data.tar.gz"
 
     echo "Copying archive..."
-    docker cp "${id}":/data.tar "${dir}/empty-mysql.tar"
+    docker cp "${id}":/data.tar.gz "${dir}/empty-mysql.tar.gz"
 
     echo "Done"
     exit 0

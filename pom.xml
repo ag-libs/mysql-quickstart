@@ -5,9 +5,9 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
+    <groupId>io.github.agavrilov76.mysql-quickstart</groupId>
     <artifactId>mysql-quickstart</artifactId>
-    <version>8.4</version>
+    <version>8.4.3.0</version>
     <packaging>jar</packaging>
 
     <name>MySQL Quickstart</name>
@@ -15,6 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mysql.version>8.4.3</mysql.version>
     </properties>
 
     <build>
@@ -49,14 +50,14 @@
                                 <resource>
                                     <directory>${project.basedir}</directory>
                                     <includes>
-                                        <include>init-tmpfs.sh</include>
+                                        <include>mysql-quickstart-entrypoint.sh</include>
                                     </includes>
                                     <targetPath>mysql-quickstart</targetPath>
                                 </resource>
                                 <resource>
                                     <directory>${project.basedir}/target</directory>
                                     <includes>
-                                        <include>empty-mysql.tar</include>
+                                        <include>empty-mysql.tar.gz</include>
                                     </includes>
                                     <targetPath>mysql-quickstart</targetPath>
                                 </resource>
@@ -99,7 +100,7 @@
                             <executable>bash</executable>
                             <arguments>
                                 <argument>${project.basedir}/generate-minimal-db.sh</argument>
-                                <argument>${project.version}</argument>
+                                <argument>${mysql.version}</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -113,6 +114,7 @@
                             <executable>bash</executable>
                             <arguments>
                                 <argument>${project.basedir}/test-mysql-tmpfs.sh</argument>
+                                <argument>${mysql.version}</argument>
                             </arguments>
                         </configuration>
                     </execution>
