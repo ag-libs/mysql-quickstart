@@ -5,14 +5,14 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.agavrilov76.mysql-quickstart</groupId>
+    <groupId>io.github.ag-libs.mysql-quickstart</groupId>
     <artifactId>mysql-quickstart</artifactId>
-    <version>8.4.3.0-SNAPSHOT</version>
+    <version>8.4.6.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>MySQL Quickstart</name>
     <description>Pre-built MySQL data directories for instant container startup</description>
-    <url>https://github.com/agavrilov76/mysql-quickstart</url>
+    <url>https://github.com/ag-libs/mysql-quickstart</url>
 
     <licenses>
         <license>
@@ -30,14 +30,14 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/agavrilov76/mysql-quickstart.git</connection>
-        <developerConnection>scm:git:ssh://github.com:agavrilov76/mysql-quickstart.git</developerConnection>
-        <url>https://github.com/agavrilov76/mysql-quickstart/tree/main</url>
+        <connection>scm:git:git://github.com/ag-libs/mysql-quickstart.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ag-libs/mysql-quickstart.git</developerConnection>
+        <url>https://github.com/ag-libs/mysql-quickstart/tree/main</url>
     </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mysql.version>8.4.3</mysql.version>
+        <mysql.version>8.4.6</mysql.version>
     </properties>
 
     <build>
@@ -49,7 +49,7 @@
                 <version>3.3.0</version>
                 <configuration>
                     <includes>
-                        <include>**/*</include>
+                        <include>mysql-quickstart/**</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -118,21 +118,6 @@
                 </configuration>
             </plugin>
 
-            <!-- GPG Signing Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 
             <!-- Exec Plugin to run database generation and tests -->
             <plugin>
@@ -172,4 +157,29 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- GPG Signing Plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

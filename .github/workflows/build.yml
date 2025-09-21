@@ -25,4 +25,4 @@ jobs:
         distribution: 'temurin'
 
     - name: Build and test
-      run: mvn verify
+      run: mvn -ntp verify
