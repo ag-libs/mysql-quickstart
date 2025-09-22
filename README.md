@@ -1,6 +1,6 @@
 # MySQL Quickstart
 
-Pre-built MySQL data directories for instant container startup. Skip the lengthy MySQL initialization process and start your containers in seconds instead of minutes.
+Pre-built MySQL data directories for instant container startup. Start your MySQL containers in less than 2 seconds instead of 10-20 seconds by skipping the initialization process.
 
 This library provides a pre-initialized MySQL data directory that eliminates the time-consuming setup phase when starting MySQL containers. The version scheme follows MySQL versions (x.y.z) with an additional build number, so version 8.4.6.0 contains a pre-built MySQL 8.4.6 database.
 
@@ -13,6 +13,25 @@ This library provides a pre-initialized MySQL data directory that eliminates the
     <version>8.4.6.0</version>
     <scope>test</scope>
 </dependency>
+```
+
+## Testcontainers Usage (Java)
+
+Perfect for Java integration tests using Testcontainers:
+
+```java
+new MySQLContainer<>("mysql:8.4.6")
+    .withUsername("admin")
+    .withPassword("test")
+    .withTmpFs(Map.of("/var/lib/mysql", "rw,size=1g"))
+    .withCreateContainerCmdModifier(
+        cmd -> cmd.withEntrypoint("/mysql-quickstart-entrypoint.sh"))
+    .withCopyFileToContainer(
+        MountableFile.forClasspathResource(
+            "mysql-quickstart/mysql-quickstart-entrypoint.sh", 755),
+        "/mysql-quickstart-entrypoint.sh")
+    .withClasspathResourceMapping(
+        "mysql-quickstart/empty-mysql.tar.gz", "/tmp/empty-mysql.tar.gz", BindMode.READ_ONLY);
 ```
 
 ## Command Line Usage
@@ -32,19 +51,6 @@ docker run -d \
   mysql:8.4.6 /mysql-quickstart-entrypoint.sh
 ```
 
-## Testcontainers Usage
+## License
 
-```java
-new MySQLContainer<>("mysql:8.4.6")
-    .withUsername("admin")
-    .withPassword("test")
-    .withTmpFs(Map.of("/var/lib/mysql", "rw,size=1g"))
-    .withCreateContainerCmdModifier(
-        cmd -> cmd.withEntrypoint("/mysql-quickstart-entrypoint.sh"))
-    .withCopyFileToContainer(
-        MountableFile.forClasspathResource(
-            "mysql-quickstart/mysql-quickstart-entrypoint.sh", 755),
-        "/mysql-quickstart-entrypoint.sh")
-    .withClasspathResourceMapping(
-        "mysql-quickstart/empty-mysql.tar.gz", "/tmp/empty-mysql.tar.gz", BindMode.READ_ONLY);
-```
+Licensed under the Apache License 2.0.
