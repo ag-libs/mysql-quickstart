@@ -30,7 +30,6 @@ id=$(docker run -d \
   --character-set-server=utf8mb4 \
   --collation-server=utf8mb4_unicode_ci \
   --explicit_defaults_for_timestamp \
-  --skip-mysqlx \
   --sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES,ONLY_FULL_GROUP_BY,ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_DATE,NO_ZERO_IN_DATE)
 
 sleep 1

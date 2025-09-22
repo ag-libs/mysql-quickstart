@@ -30,9 +30,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/ag-libs/mysql-quickstart.git</connection>
-        <developerConnection>scm:git:ssh://github.com:ag-libs/mysql-quickstart.git</developerConnection>
+        <connection>scm:git:https://github.com/ag-libs/mysql-quickstart.git</connection>
+        <developerConnection>scm:git:https://github.com/ag-libs/mysql-quickstart.git</developerConnection>
         <url>https://github.com/ag-libs/mysql-quickstart/tree/main</url>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
